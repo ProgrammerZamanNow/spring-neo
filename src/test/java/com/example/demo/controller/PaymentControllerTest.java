@@ -81,4 +81,18 @@ public class PaymentControllerTest {
     Assertions.assertEquals(200, response.getStatusCodeValue());
     Assertions.assertEquals("JAGO", response.getBody());
   }
+
+  @Test
+  void testBri() {
+    PaymentRequest body = new PaymentRequest();
+    body.setType(PaymentType.BANK_BRI);
+
+    URI endpoint = URI.create("http://localhost:" + port + "/pay");
+    RequestEntity<PaymentRequest> request = new RequestEntity<>(body, HttpMethod.POST, endpoint);
+
+    ResponseEntity<String> response = restTemplate.exchange(request, String.class);
+
+    Assertions.assertEquals(200, response.getStatusCodeValue());
+    Assertions.assertEquals("BRI", response.getBody());
+  }
 }

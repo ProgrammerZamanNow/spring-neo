@@ -4,5 +4,6 @@ public enum PaymentType {
   BANK_NEO,
   BANK_BCA,
   BANK_MANDIRI,
-  BANK_JAGO
+  BANK_JAGO,
+  BANK_BRI,
 }
