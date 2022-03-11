@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,28 @@ public class CategoryControllerTest {
 
     URI endpoint = URI.create("http://localhost:" + port + "/categories");
     RequestEntity<CreateCategoryRequest> request = new RequestEntity<>(body, HttpMethod.POST, endpoint);
+
+    ResponseEntity<Category> response = restTemplate.exchange(request, Category.class);
+
+    Assertions.assertEquals(200, response.getStatusCodeValue());
+    Assertions.assertEquals("Contoh", response.getBody().getName());
+    Assertions.assertNotNull(response.getBody().getId());
+    Assertions.assertNotNull(response.getBody().getCreatedAt());
+    Assertions.assertNotNull(response.getBody().getUpdatedAt());
+  }
+
+  @Test
+  void testCreateMandatoryParameter() {
+    CreateCategoryRequest body = new CreateCategoryRequest();
+    body.setName("Contoh");
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.add("X-Request-Id", "1234");
+    headers.add("X-Username", "khannedy");
+    headers.add("X-Session-Id", "324234i234");
+
+    URI endpoint = URI.create("http://localhost:" + port + "/categories");
+    RequestEntity<CreateCategoryRequest> request = new RequestEntity<>(body, headers, HttpMethod.POST, endpoint);
 
     ResponseEntity<Category> response = restTemplate.exchange(request, Category.class);
 
