@@ -39,4 +39,17 @@ public class CategoryControllerTest {
     Assertions.assertNotNull(response.getBody().getCreatedAt());
     Assertions.assertNotNull(response.getBody().getUpdatedAt());
   }
+
+  @Test
+  void testCreateInvalid() {
+    CreateCategoryRequest body = new CreateCategoryRequest();
+    body.setName("");
+
+    URI endpoint = URI.create("http://localhost:" + port + "/categories");
+    RequestEntity<CreateCategoryRequest> request = new RequestEntity<>(body, HttpMethod.POST, endpoint);
+
+    ResponseEntity<Category> response = restTemplate.exchange(request, Category.class);
+
+    Assertions.assertEquals(400, response.getStatusCodeValue());
+  }
 }
